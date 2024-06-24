@@ -13,7 +13,7 @@ SSH_PRIVATE_KEY=$5
 echo "$SSH_PRIVATE_KEY" > private_key
 chmod 600 private_key
 
-echo "SERVER_USERNAME: $SERVER_USERNAME"
+echo "SERVER_USERNAME: $SSH_PRIVATE_KEY"
 
 # Use rsync to deploy the files
 rsync -avz --delete -e "ssh -i private_key -o StrictHostKeyChecking=no -p $SERVER_PORT" ./ $SERVER_USERNAME@$SERVER_HOST:/path/to/deployment
