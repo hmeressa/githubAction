@@ -1,5 +1,4 @@
-
-name: Log on Main Push
+name: Deploy to Staging
 
 on:
   push:
@@ -7,8 +6,31 @@ on:
       - main
 
 jobs:
-  log1:
+  deploy:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Log Push Event
-        run: echo "Push event detected on the main branch." 
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js environment
+        uses: actions/setup-node@v3
+        with:
+          node-version: '14'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build the project
+        run: npm run build
+
+      - name: Deploy to Staging
+        env:
+          SERVER_USERNAME: ${{ secrets.SERVER_USERNAME }}
+          SERVER_PASSWORD: ${{ secrets.SERVER_PASSWORD }}
+          SERVER_HOST: ${{ secrets.SERVER_HOST }}
+          SERVER_PORT: ${{ secrets.SERVER_PORT }}
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        run: |
+          chmod +x ./deploy.sh
+          ./deploy.sh $SERVER_USERNAME $SERVER_PASSWORD $SERVER_HOST $SERVER_PORT "$SSH_PRIVATE_KEY"
