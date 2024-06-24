@@ -24,7 +24,7 @@ jobs:
     #   - name: Build the project
     #     run: npm run build
 
-      - name: Deploy to Staging
+      - name: Deploy to Stagings
         env:
           SERVER_USERNAME: ${{ secrets.SERVER_USERNAME }}
           SERVER_PASSWORD: ${{ secrets.SERVER_PASSWORD }}
